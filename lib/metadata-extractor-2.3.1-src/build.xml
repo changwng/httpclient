@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<project name="metadata-extractor" default="test" basedir=".">
+
+    <description>metadata-extractor for java build file</description>
+
+    <property name="dist" location="Releases"/>
+    <property name="build" value="Build"/>
+    <property name="src" value="src"/>
+    <property name="javadoc" value="javadoc"/>
+    <property name="lib" value="Libraries"/>
+    <property name="verbose" value="true"/>
+    <property name="debug" value="off"/>
+    <property name="version" value="2.3.1"/>
+    <property name="classpath" value="${lib}/junit.jar"/>
+
+    <target name="clean" description="deletes and recreates the destination directory">
+        <delete verbose="${verbose}" dir="${build}"/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+
+    <target name="compile" description="compile the source">
+        <javac classpath="${classpath}"
+            srcdir="${src}"
+            destdir="${build}"
+            debug="${debug}"
+            verbose="${verbose}"/>
+    </target>
+
+    <target name="dist-binaries" depends="clean, compile, test" description="generate binary distribution">
+        <jar destfile="${dist}/metadata-extractor-${version}.jar" update="false">
+            <manifest>
+                <attribute name="Main-Class" value="com.drew.imaging.jpeg.JpegMetadataReader"/>
+            </manifest>
+            <fileset dir="${build}" excludes="**/test/*.class" />
+        </jar>
+    </target>
+
+    <target name="dist-source" depends="clean, compile, test" description="generate source distribution">
+        <jar destfile="${dist}/metadata-extractor-${version}-src.jar" update="false">
+            <fileset dir="."
+                includes="${src}/**/*.java, ${src}/**/*.jpg, ${src}/**/*.metadata, ${lib}/junit.jar, build.xml, ChangeLog.txt"/>
+        </jar>
+    </target>
+
+    <target name="test" depends="compile" description="run all junit tests">
+        <junit printsummary="yes" fork="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement location="${build}"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>
+            <formatter type="plain"/>
+            <test name="com.drew.metadata.test.AllTests"/>
+        </junit>
+    </target>
+
+    <target name="javadoc" description="generate javadoc documentation">
+        <javadoc
+            destdir="${javadoc}"
+            defaultexcludes="yes"
+            author="true"
+            version="true"
+            use="true"
+            access="protected"
+            windowtitle="metadata-extractor javadoc"
+            failonerror="true">
+
+            <bottom><![CDATA[<i>Copyright &#169; 2006 Drew Noakes. All Rights Reserved.</i>]]></bottom>
+
+            <packageset dir="${src}" defaultexcludes="yes">
+                <include name="com/**"/>
+                <exclude name="com/**/test"/>
+            </packageset>
+
+        </javadoc>
+    </target>
+
+    <target name="all" depends="dist-source, dist-binaries, javadoc" description="prepare source and binary distributions, and javadoc"/>
+
+</project>

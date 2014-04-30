@@ -1,0 +1,16 @@
+HttpClient httpclient = new DefaultHttpClient();
+        
+        List<NameValuePair> qparams = new ArrayList<NameValuePair>();
+        for (Map.Entry<String, String> param: mapParams.entrySet()) {
+        	qparams.add(new BasicNameValuePair(param.getKey(),param.getValue()));
+        }
+        //아래라인
+        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(qparams, "euc-kr");
+
+        //HttpPost httpPost = new HttpPost("http://andrew.crzdev.com/ci/index.php/receiver/getall/");
+        HttpPost httpPost = new HttpPost("http://whm-sa.crz.com/jsp/cust.crizen?mode=trxApplication");
+        //아래 라인
+        httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+        httpPost.setEntity(entity);
+        
+        HttpResponse response = httpclient.execute(httpPost);

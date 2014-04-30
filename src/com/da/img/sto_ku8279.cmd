@@ -1,0 +1,1 @@
+sto 1 ku8279 1  c:/temp/ 

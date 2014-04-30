@@ -1,0 +1,1 @@
+sto 1 venus119 1  c:/temp/ 

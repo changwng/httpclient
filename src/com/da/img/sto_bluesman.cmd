@@ -1,0 +1,1 @@
+sto 1 bluesman c:/temp/ soraspace.info

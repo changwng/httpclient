@@ -1,0 +1,1 @@
+sto 1 we c:/temp/ soraspace.info
